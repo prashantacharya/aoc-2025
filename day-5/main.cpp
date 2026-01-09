@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <omp.h>
@@ -85,7 +86,35 @@ int part_one(const ParsedInput &parsed_input) {
   return result;
 }
 
-int part_two(const std::string &input) { return 0; }
+long long part_two(ParsedInput &parsed_input) {
+  auto &fresh_ids = parsed_input.fresh_ids;
+  if (fresh_ids.empty())
+    return 0;
+
+  std::sort(fresh_ids.begin(), fresh_ids.end(),
+            [](const Range &a, const Range &b) { return a.start < b.start; });
+
+  long long result = 0;
+  unsigned long long current_start = fresh_ids[0].start;
+  unsigned long long current_max_end = fresh_ids[0].end;
+
+  for (size_t i = 1; i < fresh_ids.size(); i++) {
+    auto &range = fresh_ids[i];
+
+    if (range.start <= current_max_end) {
+      current_max_end = std::max(current_max_end, range.end);
+    } else {
+      result += (current_max_end - current_start + 1);
+
+      current_start = range.start;
+      current_max_end = range.end;
+    }
+  }
+
+  result += (current_max_end - current_start + 1);
+
+  return result;
+}
 
 int main(int argc, char **argv) {
   if (argc != 2) {
@@ -107,7 +136,7 @@ int main(int argc, char **argv) {
   // print_input(parsed_input);
 
   int p1_result = part_one(parsed_input);
-  int p2_result = part_two(input_content);
+  long long p2_result = part_two(parsed_input);
 
   std::cout << "Part 1: " << p1_result << std::endl;
   std::cout << "Part 2: " << p2_result << std::endl;

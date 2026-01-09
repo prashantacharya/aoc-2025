@@ -2,3 +2,25 @@ example-input
 input
 main
 
+# --- Build Artifacts ---
+# This is the most important one. It ignores everything in your build folder.
+build/
+bin/
+out/
+
+# --- CMake Generated Files (In case you ran cmake in the root by mistake) ---
+CMakeFiles/
+CMakeCache.txt
+CMakeScripts/
+cmake_install.cmake
+Makefile
+install_manifest.txt
+compile_commands.json
+
+# --- Editor / LSP Files ---
+# Since you use Neovim/clangd
+.cache/
+.clangd/
+
+# --- OS specific files ---
+.DS_Store
