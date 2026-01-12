@@ -33,11 +33,21 @@ add_executable(day05 day-5/main.cpp)
 add_executable(day06 day-6/src/main.cpp) 
 target_link_libraries(day06 aoc_common day06_logic)
 
+# For day 07
 add_executable(day07 day-7/src/main.cpp) 
-target_link_libraries(day07 aoc_common)
+add_library(day07_logic day-7/src/logic.cpp)
+target_include_directories(day07_logic PUBLIC day-7/src)
+target_link_libraries(day07 aoc_common day07_logic)
 
 # 5. Define Tests
 # Note: linking gtest_main provides the main() function for the test
 add_executable(test_day06 day-6/tests/test_logic.cpp)
 target_link_libraries(test_day06 day06_logic aoc_common gtest_main)
 add_test(NAME Day06Test COMMAND test_day06)
+
+# Define tests for day 07
+add_executable(test_day07 day-7/tests/test_logic.cpp)
+target_link_libraries(test_day07 day07_logic aoc_common gtest_main)
+add_test(NAME Day07Test COMMAND test_day07)
+
+
